@@ -5,46 +5,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My app</title>
+    <script src="./script/main.js"></script>
+    <script src="./script/templateLoader.js"></script>
+    <script src="./script/index.js"></script>
 </head>
 
 
 <body>
 
-    <div>
-        Name : <input type="text" id="name"><br>
-        Email: <input type="email" id="email"><br />
-        Password: <input type="password" id="pswHash"><br />
-        <button id="createUserButton">Create User</button>
-    </div>
+    <div id="divMenu"></div>
 
-    <script>
+    <div id="divContent"></div>
 
-        const createUserButton = document.getElementById("createUserButton");
+    <template id="createUser">
+        <div>
+            Name : <input type="text" id="name" value="Test"><br>
+            Email: <input type="email" id="email" value="test@test.no"><br />
+            Password: <input type="password" id="pswHash" value="123"><br />
+            <button id="createUserButton">Create User</button>
+        </div>
+    </template>
 
-        createUserButton.onclick = async function (e) {
+    <template id="loginUser">
+        <div>
+            Email: <input type="email" id="loginEmail" value="test@test.no"><br />
+            Password: <input type="password" id="loginPswHash" value="123"><br />
+            <button id="loginButton">Login</button>
+        </div>
+    </template>
 
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const pswHash = document.getElementById("pswHash").value;
-            const user = { name, email, pswHash };
-            const respon = await postTo("/user", user);
+    <template id="menu_1">
+        <div style="padding: 20px;">
+            <button onclick="logout()">Logout</button>
+            <button onclick="showCreateUser()">Create User</button>
+            <button id="signOutButton" style="display: none;">Sign out</button>
+        </div> 
+    </template>
 
-        }
-
-        async function postTo(url, data) {
-            const header = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            };
-
-            const respon = await fetch(url, header);
-            return respon;
-        }
-
-    </script>
 
 </body>
 
