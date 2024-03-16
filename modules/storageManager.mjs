@@ -124,6 +124,7 @@ class DBManager {
         return user;
 
     }
+    
 
     async getUserFromEmail(email){
         const client = new pg.Client(this.#credentials);
@@ -140,15 +141,28 @@ class DBManager {
         }
         return null;
     }
+    async saveNote(note) {
+        const client = new pg.Client(this.#credentials);
+        try {
+            await client.connect();
+            const sql = "INSERT INTO notes (user_id, note_text) VALUES ($1, $2) RETURNING note_id";
+            const params = [note.user_id, note.note_text];
+            const resp = await client.query(sql, params);
+            if (resp.rows.length === 1) {
+                return resp.rows[0].note_id;
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            client.end();
+        }
+        return null;
+    }
+    
 
 }
 
-// The following is thre examples of how to get the db connection string from the enviorment variables.
-// They accomplish the same thing but in different ways.
-// It is a judgment call which one is the best. But go for the one you understand the best.
-
-// 1:
-let connectionString = process.env.ENVIORMENT == "local" ? process.env.DB_CONNECTIONSTRING_LOCAL : process.env.DB_CONNECTIONSTRING_PROD;
+let connectionString = process.env.ENVIRONMENT == "local" ? process.env.DB_CONNECTIONSTRING_LOCAL : process.env.DB_CONNECTIONSTRING_PROD;
 
 
 // We are using an enviorment variable to get the db credentials 

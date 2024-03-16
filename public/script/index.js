@@ -60,4 +60,34 @@ function showLogin() {
 function showNotes() {
     loadTemplate("menu_1", divMenu, true);
     loadTemplate("Notes", divContent, true);
+
+    const saveNoteButton = document.getElementById("saveNoteButton");
+    saveNoteButton.addEventListener("click", saveNote);
 }
+
+function showMessage(message) {
+    const messageBox = document.createElement("div");
+    messageBox.classList.add("message-box");
+    messageBox.textContent = message;
+    document.body.appendChild(messageBox);
+
+    // Fjern meldingsboksen etter 3 sekunder
+    setTimeout(() => {
+        messageBox.remove();
+    }, 3000);
+}
+
+async function saveNote() {
+    const noteTitle = document.getElementById("noteTitle").value;
+    const userNotes = document.getElementById("userNotes").value;
+    const userID = parseInt(localStorage.getItem("userID")); // Hent brukerens ID
+
+    // Send notatet til serveren for lagring i databasen
+    const response = await postTo("/notes", { title: noteTitle, content: userNotes, userID });
+    if (response.ok) {
+        showMessage("Notatet er lagret!"); // Vis en meldingsboks til brukeren
+    } else {
+        showMessage("Det oppstod en feil ved lagring av notatet."); // Vis en meldingsboks om feil
+    }
+}
+

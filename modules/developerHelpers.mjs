@@ -5,7 +5,7 @@ export default function printDeveloperStartupInportantInformationMSG() {
 
     drawLine("#", 20);
 
-    SuperLogger.log(`Server enviorment ${process.env.ENVIORMENT}`, SuperLogger.LOGGING_LEVELS.CRTICAL);
+    SuperLogger.log(`Server enviorment ${process.env.ENVIRONMENT}`, SuperLogger.LOGGING_LEVELS.CRTICAL);
 
     if (process.env.ENVIORMENT == "local") {
         SuperLogger.log(`Database connection  ${process.env.DB_CONNECTIONSTRING_LOCAL}`, SuperLogger.LOGGING_LEVELS.CRTICAL);
